@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FormGenie - Registration</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-card {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 25px;
+      color: #222;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      background-color: #fafafa;
+    }
+
+    input:focus {
+      border-color: #4facfe;
+      background-color: #fff;
+      box-shadow: 0 0 6px rgba(79,172,254,0.4);
+      outline: none;
+    }
+
+    .filled {
+      background-color: #e8fff0;
+      border-color: #28a745;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #4facfe, #00c6ff);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #00c6ff, #4facfe);
+    }
+
+    #msg {
+      display: block;
+      margin-top: 15px;
+      font-size: 13px;
+      text-align: center;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .success {
+      color: #28a745;
+    }
+    .error {
+      color: #d9534f;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-card">
+    <h1>Registration Form</h1>
+
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input id="name" name="name" placeholder="Enter your full name">
+    </div>
+
+    <div class="form-group">
+      <label for="dob">Date of Birth</label>
+      <input id="dob" name="dob" placeholder="YYYY-MM-DD">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" name="email" placeholder="example@email.com">
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input id="phone" name="phone" placeholder="Enter phone number">
+    </div>
+
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input id="address" name="address" placeholder="Enter address">
+    </div>
+
+    <div class="form-group">
+      <label for="education">Education</label>
+      <input id="education" name="education" placeholder="Highest qualification">
+    </div>
+
+    <button id="autofillBtn">✨ Autofill </button>
+    <span id="msg"></span>
+  </div>
+
+  <script>
+    function setAndNotify(el, value) {
+      if (!el) return;
+      el.value = value ?? "";
+      el.classList.add('filled');
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    async function fetchAndFill(username) {
+      const msg = document.getElementById('msg');
+      msg.textContent = 'Fetching data...';
+      msg.className = "";
+      try {
+        const url = `http://127.0.0.1:5000/user/${encodeURIComponent(username)}`;
+        const resp = await fetch(url, { cache: 'no-store' });
+        if (!resp.ok) {
+          const err = await resp.json().catch(()=>({error: 'Unknown error'}));
+          throw new Error(err.error || `Server returned ${resp.status}`);
+        }
+        const data = await resp.json();
+
+        setAndNotify(document.querySelector('input[name="name"]'), data.name);
+        setAndNotify(document.querySelector('input[name="dob"]'), data.dob);
+        setAndNotify(document.querySelector('input[name="email"]'), data.email);
+        setAndNotify(document.querySelector('input[name="phone"]'), data.phone);
+        setAndNotify(document.querySelector('input[name="address"]'), data.address);
+        setAndNotify(document.querySelector('input[name="education"]'), data.education);
+
+        msg.textContent = '✅ Autofill complete.';
+        msg.className = "success";
+      } catch (error) {
+        console.error('Autofill error:', error);
+        msg.textContent = '❌ Error: ' + (error.message || error);
+        msg.className = "error";
+      }
+    }
+
+    document.getElementById('autofillBtn').addEventListener('click', () => {
+      fetchAndFill('sumit123');
+    });
+  </script>
+</body>
+</html>

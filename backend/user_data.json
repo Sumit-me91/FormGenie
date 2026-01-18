@@ -1,0 +1,34 @@
+{
+  "sumit123": {
+    "name": "Sumit Patil",
+    "dob": "2001-07-10",
+    "email": "sumit123@gmail.com",
+    "phone": "9876543210",
+    "address": "Latur, Maharashtra",
+    "education": "B.Tech in Computer Engineering"
+  },
+  "sumit969": {
+    "name": "Sumit Kaware",
+    "dob": "2025-08-13",
+    "email": "kawaresumit2@gmail.com",
+    "phone": "08390912864",
+    "address": "Pola amruti Road",
+    "education": "b.tech"
+  },
+  "vishal409": {
+    "name": "vishal ghuge",
+    "dob": "2025-08-12",
+    "email": "kawaresumit2@gmail.com",
+    "phone": "08390912864",
+    "address": "Pola amruti Road",
+    "education": "Mtech"
+  },
+  "aryan754": {
+    "name": "aryan ghuge",
+    "dob": "2025-08-14",
+    "email": "kawaresumit2@gmail.com",
+    "phone": "08390912864",
+    "address": "Pola amruti Road",
+    "education": "MBA"
+  }
+}
